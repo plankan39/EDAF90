@@ -8,7 +8,7 @@ const imported = require("./inventory.js");
 
 console.log('Sallad: ' + imported.inventory['Sallad']);
 
-console.log('Object.keys():')
+console.log('\n\nObject.keys():')
 let names = Object.keys(imported.inventory);
 names
   .sort((a, b) => a.localeCompare(b, "sv", { sensitivity: 'case' }))
@@ -17,6 +17,42 @@ names
 console.log('\n\nfor ... in:')
 for (const name in imported.inventory) {
   console.log(name);
+}
+
+
+function Person() {
+  this.age = 0;
+}
+Person.prototype.birthday = function() { this.age++; };
+
+
+let per = new Person();
+
+console.log('\n\n Person')
+for(let n in per){
+    console.log(n +': ' + per[n] + ', is enum: ' + Object.propertyIsEnumerable(per[n]))
+}
+
+
+console.log('\n\nPerson2')
+
+class Person2 {
+  static #count = 0;
+  constructor(age) {
+    this.age = age || 0;
+    Person2.#count = Person2.#count + 1;
+  }
+
+  birthday() {
+    this.age++;
+  }
+ 
+}
+
+let per2 = new Person2();
+
+for(let n in per2){
+    console.log(n +': ' + per2[n] + ', is enum: ' + Object.propertyIsEnumerable(per2[n]))
 }
 /**
  * Reflection question 2
