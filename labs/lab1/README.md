@@ -14,3 +14,6 @@ __ask at lab!!__.
 Classes are represented as functions. The functions have a property
 called prototype which is an object including 
 
+#Reflection question 4
+#Reflection question 5
+#Reflection question 6

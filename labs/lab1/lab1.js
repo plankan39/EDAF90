@@ -5,6 +5,7 @@
  */
 
 const imported = require("./inventory.js");
+const { v4: uuidv4 } = require('uuid');
 
 console.log('Sallad: ' + imported.inventory['Sallad']);
 
@@ -81,18 +82,35 @@ console.log(makeOptions(imported.inventory, 'foundation'));
 
 console.log('\n--- Assignment 2 ---------------------------------------')
 class Salad {
-  constructor(salad) {
+    static instanceCounter = 0;
+    constructor(salad) {
+        this.id = 'salad_' + Salad.instanceCounter++;
+        this.uuid = uuidv4();
+        this.ingridients = {};
+        
         if (salad instanceof Salad) {
-            Object.assign(this, {...salad});
-        } else if (typeof salad === 'String') {
-            this.what = JSON.parse(salad);
-        } else {
-            this.ingridients = {};
+            this.ingridients = {...salad.ingridients}
         }
-  }
-  add(name, properties) {this.ingridients[name] = properties;return this;}
-  remove(name) {delete this.ingridients[name];return this;}
+
+        if (typeof salad === 'string') {
+            let json = JSON.parse(salad);
+            this.ingridients = json.ingridients;
+            this.uuid = json.uuid;
+
+        }
+    }
+
+    add(name, properties) {
+        this.ingridients[name] = properties;
+        return this;
+    }
+
+    remove(name) {
+        delete this.ingridients[name];
+        return this;
+    }
 }
+
 let myCaesarSalad = new Salad()
   .add('Sallad', imported.inventory['Sallad'])
   .add('Kycklingfilé', imported.inventory['Kycklingfilé'])
@@ -104,6 +122,8 @@ let myCaesarSalad = new Salad()
 console.log(JSON.stringify(myCaesarSalad) + '\n');
 myCaesarSalad.remove('Gurka');
 console.log(JSON.stringify(myCaesarSalad) + '\n');
+
+
 console.log('\n--- Assignment 3 ---------------------------------------')
 
 Salad.prototype.getPrice = function () {
@@ -138,15 +158,37 @@ console.log('\n--- Assignment 4 ---------------------------------------')
 const objectCopy = new Salad(myCaesarSalad);
 const json = JSON.stringify(myCaesarSalad);
 const jsonCopy = new Salad(json);
-console.log('myCesarSalad\n' + JSON.stringify(myCaesarSalad));
-console.log('copy from object\n' + JSON.stringify(objectCopy));
-console.log('copy from json\n' + JSON.stringify(jsonCopy));
+console.log('myCesarSalad\n' + JSON.stringify(myCaesarSalad) + '\n');
+console.log('copy from object\n' + JSON.stringify(objectCopy) + '\n');
+console.log('copy from json\n' + JSON.stringify(jsonCopy) + '\n');
+console.log('originalet kostar kostar ' + myCaesarSalad.getPrice() + ' kr\n');
 objectCopy.add('Gurka', imported.inventory['Gurka']);
-console.log('originalet kostar kostar ' + myCaesarSalad.getPrice() + ' kr');
-console.log('med gurka kostar den ' + objectCopy.getPrice() + ' kr');
+console.log('copy from object + gurka \n' + JSON.stringify(objectCopy) + '\n');
+console.log('originalet kostar kostar ' + myCaesarSalad.getPrice() + ' kr\n');
+console.log('med gurka kostar den ' + objectCopy.getPrice() + ' kr\n');
 
 console.log('\n--- Assignment 5 ---------------------------------------')
-/*
+
+
+class GourmetSalad extends Salad {
+    constructor(salad) {
+        super(salad);
+    }
+
+    add(name, properties, size) {
+        let propCopy = {...properties, "size": (this.ingridients[name]?.size || 0) + (size || 1)};
+        return super.add(name, propCopy);
+    }
+
+    getPrice() {
+        return Object.values(this.ingridients).reduce(
+            (previous, current) => previous + current.price * current.size, 0
+        );
+    }
+
+}
+
+
 let myGourmetSalad = new GourmetSalad()
   .add('Sallad', imported.inventory['Sallad'], 0.5)
   .add('Kycklingfilé', imported.inventory['Kycklingfilé'], 2)
@@ -154,15 +196,14 @@ let myGourmetSalad = new GourmetSalad()
   .add('Krutonger', imported.inventory['Krutonger'])
   .add('Parmesan', imported.inventory['Parmesan'], 2)
   .add('Ceasardressing', imported.inventory['Ceasardressing']);
+console.log('Min sallad: ' + JSON.stringify(myGourmetSalad));
 console.log('Min gourmetsallad med lite bacon kostar ' + myGourmetSalad.getPrice() + ' kr');
 myGourmetSalad.add('Bacon', imported.inventory['Bacon'], 1)
 console.log('Med extra bacon kostar den ' + myGourmetSalad.getPrice() + ' kr');
-*/
+
 console.log('\n--- Assignment 6 ---------------------------------------')
-/*
 console.log('Min gourmetsallad har id: ' + myGourmetSalad.id);
 console.log('Min gourmetsallad har uuid: ' + myGourmetSalad.uuid);
-*/
 
 /**
  * Reflection question 4
