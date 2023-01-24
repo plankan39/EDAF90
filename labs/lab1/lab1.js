@@ -82,22 +82,28 @@ console.log(makeOptions(imported.inventory, 'foundation'));
 
 console.log('\n--- Assignment 2 ---------------------------------------')
 class Salad {
-    static instanceCounter = 0;
+    static #instanceCounter = 0;
     constructor(salad) {
-        this.id = 'salad_' + Salad.instanceCounter++;
+        if (typeof salad === 'string') {
+            let json = JSON.parse(salad);
+            this.ingridients = json.ingridients;
+            this.uuid = json.uuid;
+            this.id = json.id;
+            return;
+        }
+
         this.uuid = uuidv4();
         this.ingridients = {};
+        
+        Object.defineProperty(this, "id", {
+            value: 'salad_' + Salad.#instanceCounter++
+        });
+
         
         if (salad instanceof Salad) {
             this.ingridients = {...salad.ingridients}
         }
 
-        if (typeof salad === 'string') {
-            let json = JSON.parse(salad);
-            this.ingridients = json.ingridients;
-            this.uuid = json.uuid;
-
-        }
     }
 
     add(name, properties) {
@@ -119,9 +125,9 @@ let myCaesarSalad = new Salad()
   .add('Parmesan', imported.inventory['Parmesan'])
   .add('Ceasardressing', imported.inventory['Ceasardressing'])
   .add('Gurka', imported.inventory['Gurka']);
-console.log(JSON.stringify(myCaesarSalad) + '\n');
+console.log(JSON.stringify(myCaesarSalad, undefined, 2) + '\n');
 myCaesarSalad.remove('Gurka');
-console.log(JSON.stringify(myCaesarSalad) + '\n');
+console.log(JSON.stringify(myCaesarSalad, undefined, 2) + '\n');
 
 
 console.log('\n--- Assignment 3 ---------------------------------------')
@@ -158,12 +164,12 @@ console.log('\n--- Assignment 4 ---------------------------------------')
 const objectCopy = new Salad(myCaesarSalad);
 const json = JSON.stringify(myCaesarSalad);
 const jsonCopy = new Salad(json);
-console.log('myCesarSalad\n' + JSON.stringify(myCaesarSalad) + '\n');
-console.log('copy from object\n' + JSON.stringify(objectCopy) + '\n');
-console.log('copy from json\n' + JSON.stringify(jsonCopy) + '\n');
+console.log('myCesarSalad\n' + JSON.stringify(myCaesarSalad, undefined, 2) + '\n');
+console.log('copy from object\n' + JSON.stringify(objectCopy, undefined, 2) + '\n');
+console.log('copy from json\n' + JSON.stringify(jsonCopy, undefined, 2) + '\n');
 console.log('originalet kostar kostar ' + myCaesarSalad.getPrice() + ' kr\n');
 objectCopy.add('Gurka', imported.inventory['Gurka']);
-console.log('copy from object + gurka \n' + JSON.stringify(objectCopy) + '\n');
+console.log('copy from object + gurka \n' + JSON.stringify(objectCopy, undefined, 2) + '\n');
 console.log('originalet kostar kostar ' + myCaesarSalad.getPrice() + ' kr\n');
 console.log('med gurka kostar den ' + objectCopy.getPrice() + ' kr\n');
 
@@ -196,7 +202,7 @@ let myGourmetSalad = new GourmetSalad()
   .add('Krutonger', imported.inventory['Krutonger'])
   .add('Parmesan', imported.inventory['Parmesan'], 2)
   .add('Ceasardressing', imported.inventory['Ceasardressing']);
-console.log('Min sallad: ' + JSON.stringify(myGourmetSalad));
+console.log('Min sallad: ' + JSON.stringify(myGourmetSalad, undefined, 2));
 console.log('Min gourmetsallad med lite bacon kostar ' + myGourmetSalad.getPrice() + ' kr');
 myGourmetSalad.add('Bacon', imported.inventory['Bacon'], 1)
 console.log('Med extra bacon kostar den ' + myGourmetSalad.getPrice() + ' kr');

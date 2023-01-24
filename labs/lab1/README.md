@@ -16,7 +16,7 @@ would be used, for example:
         dressing: 
         false, 
         vegan: true, 
-        gluten:false, 
+        gluten:false,  
         lactose: false}
 }
 ```
@@ -49,17 +49,29 @@ __ask at lab!!__.
 
 # Reflection question 3: 
 How are classes and inherited properties represented in JavaScript?
+
 Classes are represented as functions. The functions have a property
-called prototype which is an object including 
+called prototype. Prototype chains can be created to to create inheritancee.
 
 # Reflection question 4:
 In which object are static properties stored?
 
 
+Static properties are stored in the Class object(eg Salad, or GourmetSalad) 
+
+
 # Reflection question 5:
 Can you make the `id` property read only?
+
+
+You can by using `Object.defineProperty(..)` for example. However the property
+will not show up when stringifying. __WHY?__
+
 
 # Reflection question 6:
 Can properties be private?
 
+
+Yes by using the `#property` syntax. Can not be accessed from outside the class 
+or inheriting classes.
 
