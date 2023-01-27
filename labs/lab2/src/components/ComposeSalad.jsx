@@ -3,7 +3,7 @@ import SelectRadio from "./formComponents/SelectRadio";
 import SelectCheckbox from "./formComponents/SelectCheckbox";
 import Salad from "../model/Salad";
 
-function ComposeSalad({ inventory }) {
+function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
   let extras = Object.keys(inventory).filter((item) => inventory[item].extra);
   let foundations = Object.keys(inventory).filter(
     (item) => inventory[item].foundation
@@ -14,7 +14,6 @@ function ComposeSalad({ inventory }) {
   let dressings = Object.keys(inventory).filter(
     (item) => inventory[item].dressing
   );
-  let cart = [];
 
   const [foundation, setFoundation] = useState(foundations[0]);
   const [protein, setProtein] = useState(proteins[0]);
@@ -30,9 +29,9 @@ function ComposeSalad({ inventory }) {
     ingredients.forEach((ingredient) =>
       salad.add(ingredient, inventory[ingredient])
     );
-    cart.push(salad);
+    setShoppingCart([...shoppingCart, salad])
     resetChoices();
-    console.log(JSON.stringify(cart, undefined, 2));
+    console.log(JSON.stringify(shoppingCart, undefined, 2));
   };
 
   const resetChoices = function () {
@@ -51,24 +50,24 @@ function ComposeSalad({ inventory }) {
           onReset={resetChoices}
         >
           {/* <div> */}
-            <h4>Välj bas: </h4>
-            <SelectRadio
-              name="foundation"
-              options={foundations}
-              updateState={setFoundation}
-              currentState={foundation}
-            />
-            <div>Vald bas är: {foundation}</div>
+          <h4>Välj bas: </h4>
+          <SelectRadio
+            name="foundation"
+            options={foundations}
+            updateState={setFoundation}
+            currentState={foundation}
+          />
+          <div>Vald bas är: {foundation}</div>
           {/* </div> */}
           {/* <div> */}
-            <h4> Välj protein: </h4>
-            <SelectRadio
-              name="protein"
-              options={proteins}
-              updateState={setProtein}
-              currentState={protein}
-            />
-            <div>Valt protein är: {protein}</div>
+          <h4> Välj protein: </h4>
+          <SelectRadio
+            name="protein"
+            options={proteins}
+            updateState={setProtein}
+            currentState={protein}
+          />
+          <div>Valt protein är: {protein}</div>
           {/* </div> */}
           <div>
             <h4>Välj tillbehör: </h4>
@@ -92,11 +91,11 @@ function ComposeSalad({ inventory }) {
             />
             <div>Vald dressing är: {dressing}</div>
           </div>
-          <div className="col-2">
-            <button className="btn btn-primary" type="submit">
+          <div className="row">
+            <button className="btn col-5 btn-primary m-2" type="submit">
               Lägg till Sallad till varukorgen
             </button>
-            <button className="btn btn-secondary" type="reset">
+            <button className="btn col-5 btn-secondary m-2" type="reset">
               Börja om
             </button>
           </div>

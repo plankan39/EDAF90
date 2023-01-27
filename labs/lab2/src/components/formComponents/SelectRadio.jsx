@@ -4,7 +4,7 @@ const SelectRadio = ({ name, options, updateState, currentState }) => {
       {options.map((o) => (
         <label
           className={
-            "col-3 mt-2 p-3 btn " +
+            "col-3 m-2 p-3 btn " +
             (currentState === o ? "btn-primary" : "btn-outline-primary")
           }
           key={o}
