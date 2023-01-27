@@ -27,7 +27,9 @@ function ComposeSalad({ inventory }) {
     let ingredients = [foundation, protein, ...extras, dressing];
     let salad = new Salad();
 
-    ingredients.forEach((ingredient) => salad.add(ingredient, inventory[ingredient]));
+    ingredients.forEach((ingredient) =>
+      salad.add(ingredient, inventory[ingredient])
+    );
     cart.push(salad);
     resetChoices();
     console.log(JSON.stringify(cart, undefined, 2));
@@ -38,12 +40,12 @@ function ComposeSalad({ inventory }) {
     setProtein(proteins[0]);
     setExtra({});
     setDressing(dressings[0]);
-  }
+  };
 
   return (
     <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
-        <form className="d-grid gap-3" onSubmit={handleSubmit}>
+        <form className="d-grid gap-3" onSubmit={handleSubmit} onReset={resetChoices}>
           <div>
             <h4>Välj bas: </h4>
             <SelectRadio
@@ -73,11 +75,7 @@ function ComposeSalad({ inventory }) {
             />
             <div>
               Valda tillbehör är:{" "}
-              {JSON.stringify(
-                Object.keys(extra).filter((n) => extra[n]),
-                1,
-                2
-              )}
+              {JSON.stringify(Object.keys(extra).filter((n) => extra[n]))}
             </div>
           </div>
           <div>
@@ -90,7 +88,14 @@ function ComposeSalad({ inventory }) {
             />
             <div>Vald dressing är: {dressing}</div>
           </div>
-          <button className="btn btn-primary" type="submit">Lägg till Sallad till varukorgen</button>
+          <div className="col-2">
+            <button className="btn btn-primary" type="submit">
+              Lägg till Sallad till varukorgen
+            </button>
+            <button className="btn btn-secondary" type="reset">
+              Börja om
+            </button>
+          </div>
         </form>
       </div>
     </div>
