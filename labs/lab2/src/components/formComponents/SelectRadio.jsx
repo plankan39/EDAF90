@@ -1,20 +1,26 @@
 const SelectRadio = ({ name, options, updateState, currentState }) => {
   return (
-    <>
+    <div className="container">
       {options.map((o) => (
-        <div className="form-check form-check-inline col-md-3" key={o}>
+        <label
+          className={
+            "col-3 mt-2 p-3 btn " +
+            (currentState === o ? "btn-primary" : "btn-outline-primary")
+          }
+          key={o}
+        >
+          {o}
           <input
-            className="form-check-input"
+            className="btn-check"
             type="radio"
             name={name}
             value={o}
             checked={currentState === o}
             onChange={(e) => updateState(e.target.value)}
           />
-          <label className="form-check-label">{o}</label>
-        </div>
+        </label>
       ))}
-    </>
+    </div>
   );
 };
 

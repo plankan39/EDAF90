@@ -4,15 +4,15 @@ import SelectCheckbox from "./formComponents/SelectCheckbox";
 import Salad from "../model/Salad";
 
 function ComposeSalad({ inventory }) {
-  let extras = Object.keys(inventory).filter((name) => inventory[name].extra);
+  let extras = Object.keys(inventory).filter((item) => inventory[item].extra);
   let foundations = Object.keys(inventory).filter(
-    (name) => inventory[name].foundation
+    (item) => inventory[item].foundation
   );
   let proteins = Object.keys(inventory).filter(
-    (name) => inventory[name].protein
+    (item) => inventory[item].protein
   );
   let dressings = Object.keys(inventory).filter(
-    (name) => inventory[name].dressing
+    (item) => inventory[item].dressing
   );
   let cart = [];
 
@@ -45,8 +45,12 @@ function ComposeSalad({ inventory }) {
   return (
     <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
-        <form className="d-grid gap-3" onSubmit={handleSubmit} onReset={resetChoices}>
-          <div>
+        <form
+          className="d-grid gap-3"
+          onSubmit={handleSubmit}
+          onReset={resetChoices}
+        >
+          {/* <div> */}
             <h4>Välj bas: </h4>
             <SelectRadio
               name="foundation"
@@ -55,8 +59,8 @@ function ComposeSalad({ inventory }) {
               currentState={foundation}
             />
             <div>Vald bas är: {foundation}</div>
-          </div>
-          <div>
+          {/* </div> */}
+          {/* <div> */}
             <h4> Välj protein: </h4>
             <SelectRadio
               name="protein"
@@ -65,7 +69,7 @@ function ComposeSalad({ inventory }) {
               currentState={protein}
             />
             <div>Valt protein är: {protein}</div>
-          </div>
+          {/* </div> */}
           <div>
             <h4>Välj tillbehör: </h4>
             <SelectCheckbox
