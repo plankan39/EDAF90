@@ -8,7 +8,7 @@ Run with `node lab1.js`
 
 In most programming languages a complete record for each ingredient
 would be used, for example: 
-```{JavaScript}
+```js
 {Sallad: {price: 10, 
         foundation: true, 
         protein: false, 
@@ -28,12 +28,12 @@ when trying to be read. Because of falsy characteristics `undefined === false`.
 
 # Reflection question 2: 
 When will 
-```{JavaScript}
+```js
 let names = Object.keys(imported.inventory);
 names.forEach(name => console.log(name));
 ```
 give a different output than
-```{JavaScript}
+```js
 for (const name in imported.inventory) {
     console.log(name);
 }
