@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+## Reflection question 1
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+As an alternative to the function component you can use a class component:
+`class ComposeSalad extends react.Component{}`. Is there a difference
+between the class component and function components concerning features
+(use cases where only one of them can be used.)
 
-## Available Scripts
+### **Answer:**
 
-In the project directory, you can run:
+There are no feature differences but the focus on development seems to
+be on **function components** and **hooks** rather than on methods in
+`react.Component`.
 
-### `npm start`
+## Reflection question 2
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The render function must be a pure function of `props` and the component
+**state**, the values returned by `useState()`. What happens if the output
+of the render function is depending on other data that changes over time?
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### **Answer:**
 
-### `npm test`
+React optimizes how often and when parts of the **DOM** are re-rendered.
+A component is only guaranteed to be re-rendered if the **state** or
+the **props** of the component change. So even if data changes internally,
+the change will not be rendered to the output if the render function is
+dependent on other data that changes over time.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Reflection question 3
 
-### `npm run build`
+```jsx
+import { useState } from ’react’;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function ComposeSalad(props) {
+  let foundations = Object.keys(props.inventory).filter(name =>
+                                props.inventory[name].foundation);
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  const [foundation, setFoundation] = useState(’Pasta’);
+  const [extra, setExtra] = useState({Bacon: true, Fetaost: true});
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  return (
+    <div className="container col-12">
+      <div className="row h-200 p-5 bg-light border rounded-3">
+        <h2>Välj bas</h2>
+        {foundations.map(
+          name => <div key={name} className="col-4">{name}</div>
+          )
+        }
+      </div>
+    </div>
+  );
+}
 
-### `npm run eject`
+export default ComposeSalad;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+In the code above, the `foundations` array is computed every time the
+component is rendered. The inventory changes very infrequently.
+Can you cache `foundations ` so it is only computed when
+`props.inventory` changes?
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### **Answer:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+It is possible to cache `foundations` by moving the computation of
+it to the **parent component** and pass it in `props`. One could
+make a **wrapper** component in the same file like:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```jsx
+function ComposeSaladWrapper(props) {
+  let foundations = Object.keys(props.inventory).filter(
+    (name) => props.inventory[name].foundation
+  );
 
-## Learn More
+  return <ComposeSalad foundations={foundations} />;
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default ComposeSaladWrapper;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Reflection question 4
 
-### Code Splitting
+What triggers react to call the `render()` function and update
+the **DOM**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### **Answer**
 
-### Analyzing the Bundle Size
+When the **state** or the **props** of the component changes, it triggers a re-render.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Reflection question 5
 
-### Making a Progressive Web App
+When the user change the html form state (DOM), does this change
+the state of your component?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### **Answer**
 
-### Advanced Configuration
+No, not unless your event handling (`onClick`, `onChange`, etc...) updates the state.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Reflection question 6
 
-### Deployment
+For a class based component, what is the value of `this` in the event handling call-back functions?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### **Answer**
 
-### `npm run build` fails to minify
+Some part of the **DOM**. This means that you need to bind `this` in the call-back functions to the class based component if the state needs to be changed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Reflection question 7
+
+How is the prototype chain affected when copying an object with 
+`copy = {...sourceObject}`?
+
+### **Answer**
+
+The copy **does not** inherit the prototype of the source object.
