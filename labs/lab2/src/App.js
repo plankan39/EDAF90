@@ -14,7 +14,6 @@ function App() {
     <div className="container py-4">
       <header className="pb-3 mb-4 border-bottom">
           <img src={header} alt="Header" className="img-fluid rounded mx-auto d-block" />
-        {/* <span className="fs-4">Min egen salladsbar</span> */}
       </header>
       <ComposeSalad inventory={inventory} shoppingCart={shoppingCart} setShoppingCart={setShoppingCart} />
       <ViewOrder shoppingCart={shoppingCart} setShoppingCart={setShoppingCart}/>
