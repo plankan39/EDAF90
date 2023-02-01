@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <ul className="nav nav-pills">
+    <ul className="nav nav-tabs bg-light">
       <li className="nav-item">
-        <Link className="nav-link active" to="/compose-salad">
+        <Link className="nav-link " to="/compose-salad">
             Komponera en Sallad
         </Link>
       </li>

@@ -2,30 +2,33 @@ import { Link } from "react-router-dom";
 
 const SelectCheckbox = ({ options, updateState, currentState }) => {
   return (
-    <div className="row">
+    <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6">
       {options.map((o) => (
-        <div key={o} className="col-3">
-          <label
-            className={
-              "col-9 btn m-2 " +
-              (currentState[o] ? "btn-primary" : "btn-outline-primary")
+        <div key={o} className="col d-flex flex-nowrap mt-2 mb-2">
+          <input
+            id={"SelectCheckbox_" + o}
+            className="btn-check"
+            type="checkbox"
+            name={o}
+            checked={currentState[o] || false}
+            onChange={(e) =>
+              updateState((currentState) => {
+                return { ...currentState, [o]: e.target.checked };
+              })
             }
+          />
+          <label
+            htmlFor={"SelectCheckbox_" + o}
+            type="button"
+            className="text-break col btn btn-sm btn-outline-primary "
           >
-            <input
-              className="btn-check"
-              type="checkbox"
-              name={o}
-              checked={currentState[o] || false}
-              onChange={(e) =>
-                updateState({ ...currentState, [o]: e.target.checked })
-              }
-            />
             {o}
           </label>
-          <Link to={"/view-ingredient/" + o}>
-            <label className="col btn btn-link">
-              <input className="btn-check" />?
-            </label>
+          <Link
+            className="col-1 btn btn-sm btn-link "
+            to={"/view-ingredient/" + o}
+          >
+            ?
           </Link>
         </div>
       ))}

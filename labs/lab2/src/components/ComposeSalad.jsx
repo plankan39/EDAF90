@@ -3,8 +3,10 @@ import SelectRadio from "./formComponents/SelectRadio";
 import SelectCheckbox from "./formComponents/SelectCheckbox";
 import Salad from "../model/Salad";
 
-function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
-  let extras = Object.keys(inventory).filter((item) => inventory[item].extra);
+function ComposeSalad({ inventory, setShoppingCart }) {
+  let extraItems = Object.keys(inventory).filter(
+    (item) => inventory[item].extra
+  );
   let foundations = Object.keys(inventory).filter(
     (item) => inventory[item].foundation
   );
@@ -18,48 +20,51 @@ function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
   const [foundation, setFoundation] = useState(foundations[0]);
   const [protein, setProtein] = useState(proteins[0]);
   const [dressing, setDressing] = useState(dressings[0]);
-  const [extra, setExtra] = useState({});
+  const [extras, setExtras] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let extras = Object.keys(extra).filter((n) => extra[n]);
-    let ingredients = [foundation, protein, ...extras, dressing];
+    let chosenExtras = Object.keys(extras).filter((n) => extras[n]);
     let salad = new Salad();
 
-    ingredients.forEach((ingredient) =>
+    chosenExtras.forEach((ingredient) =>
       salad.add(ingredient, inventory[ingredient])
     );
-    setShoppingCart([...shoppingCart, salad])
+
+    salad
+      .add(foundation, inventory[foundation])
+      .add(protein, inventory[protein])
+      .add(dressing, inventory[dressing]);
+
+    setShoppingCart((shoppingCart) => [...shoppingCart, salad]);
     resetChoices();
-    console.log(JSON.stringify(shoppingCart, undefined, 2));
   };
 
   const resetChoices = function () {
     setFoundation(foundations[0]);
     setProtein(proteins[0]);
-    setExtra({});
+    setExtras({});
     setDressing(dressings[0]);
   };
 
   return (
-    <div className="container col-12">
-      <div className="row h-200 p-5 bg-light border rounded-3">
+    <div className="container">
+      <div className="row p-5 bg-light border rounded-3">
         <form
-          className="d-grid gap-3"
+          // className="d-grid gap-3"
           onSubmit={handleSubmit}
           onReset={resetChoices}
         >
-          {/* <div> */}
-          <h4>Välj bas: </h4>
-          <SelectRadio
-            name="foundation"
-            options={foundations}
-            updateState={setFoundation}
-            currentState={foundation}
-          />
-          <div>Vald bas är: {foundation}</div>
-          {/* </div> */}
-          {/* <div> */}
+          <div className="">
+            <h4>Välj bas: </h4>
+            <SelectRadio
+              name="foundation"
+              options={foundations}
+              updateState={setFoundation}
+              currentState={foundation}
+            />
+            <div>Vald bas är: {foundation}</div>
+          </div>
           <h4> Välj protein: </h4>
           <SelectRadio
             name="protein"
@@ -68,17 +73,16 @@ function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
             currentState={protein}
           />
           <div>Valt protein är: {protein}</div>
-          {/* </div> */}
           <div>
             <h4>Välj tillbehör: </h4>
             <SelectCheckbox
-              options={extras}
-              updateState={setExtra}
-              currentState={extra}
+              options={extraItems}
+              updateState={setExtras}
+              currentState={extras}
             />
             <div>
               Valda tillbehör är:{" "}
-              {JSON.stringify(Object.keys(extra).filter((n) => extra[n]))}
+              {JSON.stringify(Object.keys(extras).filter((n) => extras[n]))}
             </div>
           </div>
           <div>

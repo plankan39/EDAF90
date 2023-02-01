@@ -1,12 +1,12 @@
 const SelectCheckbox = ({ options, updateState, currentState }) => {
   return (
-    <div className="container">
+    <div className="row">
       {options.map((o) => (
         <label
           key={o}
           className={
             "btn col-3 m-2 p-3 " +
-            (currentState[o] ? "btn-primary" : "btn-outline-primary")
+            (currentState[o] ? " btn-primary" : " btn-outline-primary")
           }
         >
           <input
@@ -15,7 +15,9 @@ const SelectCheckbox = ({ options, updateState, currentState }) => {
             name={o}
             checked={currentState[o] || false}
             onChange={(e) =>
-              updateState({ ...currentState, [o]: e.target.checked })
+              updateState((currentState) => {
+                return { ...currentState, [o]: e.target.checked };
+              })
             }
           />
           {o}

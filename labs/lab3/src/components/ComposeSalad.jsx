@@ -1,8 +1,9 @@
 import { useState } from "react";
-import SelectRadio from "./formComponents/SelectRadio";
+import { useNavigate } from "react-router-dom";
+
 import SelectCheckbox from "./formComponents/SelectCheckbox";
 import Salad from "../model/Salad";
-import { useNavigate } from "react-router-dom";
+import SelectDropdown from "./formComponents/SelectDropDown";
 
 function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
   let extras = Object.keys(inventory).filter((item) => inventory[item].extra);
@@ -17,13 +18,18 @@ function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
   );
   let nav = useNavigate();
 
-  const [foundation, setFoundation] = useState(foundations[0]);
-  const [protein, setProtein] = useState(proteins[0]);
-  const [dressing, setDressing] = useState(dressings[0]);
+  const [foundation, setFoundation] = useState("");
+  const [protein, setProtein] = useState("");
+  const [dressing, setDressing] = useState("");
   const [extra, setExtra] = useState({});
+  const [formClass, setFormClass] = useState("d-grid gap-5");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormClass((n) => n + " was-validated");
+    if (!e.target.checkValidity()) {
+      return;
+    }
     let extras = Object.keys(extra).filter((n) => extra[n]);
     let ingredients = [foundation, protein, ...extras, dressing];
     let salad = new Salad();
@@ -38,67 +44,67 @@ function ComposeSalad({ inventory, shoppingCart, setShoppingCart }) {
   };
 
   const resetChoices = function () {
-    setFoundation(foundations[0]);
-    setProtein(proteins[0]);
+    setFoundation("");
+    setProtein("");
     setExtra({});
-    setDressing(dressings[0]);
+    setDressing("");
   };
 
   return (
-    <div className="container col-12">
-      <div className="row h-200 p-5 bg-light border rounded-3">
+    <div className="container ">
+      <div className="row h-100 p-5 bg-light border rounded-3">
         <form
-          className="d-grid gap-3"
+          className={formClass}
           onSubmit={handleSubmit}
           onReset={resetChoices}
+          noValidate
         >
-          {/* <div> */}
-          <h4>Välj bas: </h4>
-          <SelectRadio
-            name="foundation"
-            options={foundations}
-            updateState={setFoundation}
-            currentState={foundation}
-          />
-          <div>Vald bas är: {foundation}</div>
-          {/* </div> */}
-          {/* <div> */}
-          <h4> Välj protein: </h4>
-          <SelectRadio
-            name="protein"
-            options={proteins}
-            updateState={setProtein}
-            currentState={protein}
-          />
-          <div>Valt protein är: {protein}</div>
-          {/* </div> */}
-          <div>
+          <div className="row row-cols-1 row-cols-md-3">
+            <div className="col">
+              <h4>Välj bas: </h4>
+              <SelectDropdown
+                options={foundations}
+                updateState={setFoundation}
+                currentState={foundation}
+              />
+            </div>
+            <div className="col">
+              <h4> Välj protein: </h4>
+              <SelectDropdown
+                options={proteins}
+                updateState={setProtein}
+                currentState={protein}
+              />
+            </div>
+            <div className="col">
+              <h4>Välj dressing: </h4>
+              <SelectDropdown
+                options={dressings}
+                updateState={setDressing}
+                currentState={dressing}
+              />
+            </div>
+          </div>
+          <div className="row">
             <h4>Välj tillbehör: </h4>
             <SelectCheckbox
               options={extras}
               updateState={setExtra}
               currentState={extra}
             />
-            <div>
-              Valda tillbehör är:{" "}
-              {JSON.stringify(Object.keys(extra).filter((n) => extra[n]))}
-            </div>
           </div>
-          <div>
-            <h4>Välj dressing: </h4>
-            <SelectRadio
-              name="dressing"
-              options={dressings}
-              updateState={setDressing}
-              currentState={dressing}
-            />
-            <div>Vald dressing är: {dressing}</div>
-          </div>
-          <div className="row">
-            <button className="btn col-5 btn-primary m-2" type="submit">
+
+          <div className="row gap-3 justify-content-md-center">
+            <button
+              className="btn col col-md-3 col-lg-2 btn-primary "
+              type="submit"
+            >
               Lägg till Sallad till varukorgen
             </button>
-            <button className="btn col-5 btn-secondary m-2" type="reset">
+            <button
+              className="btn col col-md-3 col-lg-2 btn-secondary "
+              type="reset"
+            >
               Börja om
             </button>
           </div>

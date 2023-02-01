@@ -1,6 +1,6 @@
 const SelectRadio = ({ name, options, updateState, currentState }) => {
   return (
-    <div className="container">
+    <div className="row align-self-center border">
       {options.map((o) => (
         <label
           className={
