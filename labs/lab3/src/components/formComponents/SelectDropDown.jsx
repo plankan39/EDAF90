@@ -20,6 +20,7 @@ const SelectDropdown = ({ options, updateState, currentState }) => {
         ))}
       </select>
       <div className="invalid-feedback">Välj ett av alternativen</div>
+      <div className="valid-feedback">Snyggt valt</div>
     </div>
   );
 };

@@ -2,25 +2,18 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import ComposeSalad from "./components/ComposeSalad";
 import inventory from "./inventory.ES6";
-import header from "./assets/header.png";
 import { useState } from "react";
 import ViewOrder from "./components/ViewOrder";
 import NavBar from "./components/NavBar";
 import { Route, Routes } from "react-router-dom";
 import ViewIngredient from "./components/ViewIngredient";
+import Header from "./components/Header";
 
 function App() {
   const [shoppingCart, setShoppingCart] = useState([]);
   return (
     <div className="container py-4">
-      <header className="pb-3 mb-4 border-bottom">
-        <img
-          src={header}
-          alt="Header"
-          className="img-fluid rounded mx-auto d-block"
-        />
-      </header>
-
+      <Header />
       <NavBar />
       <Routes>
         <Route

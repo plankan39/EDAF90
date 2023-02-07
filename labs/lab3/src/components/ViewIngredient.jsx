@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 function ViewIngredient({ inventory }) {
   let params = useParams();
-  console.log(params.name);
 
   let ingredientProperties = Object.keys(inventory[params.name]).filter(
     (n) => inventory[params.name][n] === true
@@ -11,9 +10,9 @@ function ViewIngredient({ inventory }) {
   let price = inventory[params.name]["price"];
 
   return (
-    <div>
+    <div className="col">
       <h3>{params.name}</h3>
-      <ul className="list-group col-2">
+      <ul className="list-group col">
         {ingredientProperties.map((n) => (
           <li className="list-group-item" key={n}>
             {n}
