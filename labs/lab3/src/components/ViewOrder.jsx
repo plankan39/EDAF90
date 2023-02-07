@@ -11,17 +11,16 @@ const ViewOrder = ({ shoppingCart, setShoppingCart }) => {
             key={salad.uuid}
           >
             <div className="col p-1">
-            {Object.keys({ ...salad.ingredients }).reduce(
-              (prev, curr) => prev + curr + ", ",
-              ""
-            )}
-            {"pris: " + salad.getPrice() + " kr"}
-
+              {Object.keys({ ...salad.ingredients }).reduce(
+                (prev, curr) => prev + curr + ", ",
+                ""
+              )}
+              {"pris: " + salad.getPrice() + " kr"}
             </div>
 
             <button
               className=" col-1 btn btn-sm btn-primary "
-            //   justify-content-end "
+              //   justify-content-end "
               type="button"
               onClick={(e) =>
                 setShoppingCart(

@@ -6,15 +6,9 @@ const SelectDropdown = ({ options, updateState, currentState }) => {
         required
         onChange={(e) => updateState(e.target.value)}
       >
-        <option value="">
-          Välj ett alternativ
-        </option>
+        <option value="">Välj ett alternativ</option>
         {options.map((o) => (
-          <option
-            key={o}
-            value={o}
-            required
-          >
+          <option key={o} value={o} required>
             {o}
           </option>
         ))}
