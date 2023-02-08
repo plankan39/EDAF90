@@ -30,12 +30,7 @@ function App() {
       .then((ingredientGroups) =>
         ingredientGroups.reduce((prev, curr) => ({ ...prev, ...curr }))
       )
-      .then((allIngredients) =>
-        setInventory((oldInventory) => ({
-          ...oldInventory,
-          ...allIngredients,
-        }))
-      );
+      .then((allIngredients) => setInventory(allIngredients));
 
     let localShoppingCart = JSON.parse(
       window.localStorage.getItem("shoppingCart")
