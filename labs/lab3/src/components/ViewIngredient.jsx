@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 
 function ViewIngredient({ inventory }) {
   let params = useParams();
-
+if(!inventory[params.name]){
+  return <p>Does not exist</p>
+}
   let ingredientProperties = Object.keys(inventory[params.name]).filter(
     (n) => inventory[params.name][n] === true
   );
