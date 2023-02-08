@@ -1,0 +1,3 @@
+[submodule "webprog"]
+	path = webprog
+	url = https://github.com/lunduniversity/webprog.git
