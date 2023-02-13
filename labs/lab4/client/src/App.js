@@ -20,7 +20,29 @@ function App() {
     window.localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
   };
 
+  const fetchInventory = function (group) {
+    let url = `http://localhost:8080/${group}/`;
+    return fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`${url} returned status ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((names) => {
+        let props = names.map((name) => fetchIngredient(url, name));
+        return Promise.all(props).then((p) =>
+          p.reduce(
+            (prev, current, index) => ({ ...prev, [names[index]]: current }),
+            {}
+          )
+        );
+      });
+  };
   useEffect(() => {
+    // let url = `http://localhost:8080/foundations/`;
+    // fetchIngredient(url, 'abc');
+
     Promise.all([
       fetchInventory("foundations"),
       fetchInventory("proteins"),
@@ -50,26 +72,6 @@ function App() {
       }
       return response.json();
     });
-  };
-
-  const fetchInventory = function (group) {
-    let url = `http://localhost:8080/${group}/`;
-    return fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`${url} returned status ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((names) => {
-        let props = names.map((name) => fetchIngredient(url, name));
-        return Promise.all(props).then((p) =>
-          p.reduce(
-            (prev, current, index) => ({ ...prev, [names[index]]: current }),
-            {}
-          )
-        );
-      });
   };
 
   return (

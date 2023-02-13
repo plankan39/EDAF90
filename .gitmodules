@@ -1,3 +1,6 @@
 [submodule "webprog"]
 	path = webprog
 	url = https://github.com/lunduniversity/webprog.git
+[submodule "EDAF90-project"]
+	path = EDAF90-project
+	url = git@github.com:plankan39/EDAF90-project.git
